@@ -2,7 +2,7 @@
     <a class="navbar-brand" href="{% url 'index' %}"><span style="color:rgb(45, 236, 19)">Test</span>app</a>
     <nav class="my-2 my-md-0 mr-md-3">
         {% if user.is_authenticated %}
-            {% if not user.profile.company %}   
+            {% if user.profile.role == 'owner' %}
                 <a class="p-2 text-dark" href="{% url 'create' %}">Создать организацию</a>
             {% endif %}
             <a class="p-2 text-dark" href="{% url 'logout' %}">Выйти</a>

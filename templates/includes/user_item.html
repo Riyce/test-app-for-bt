@@ -1,0 +1,24 @@
+<div class="card-body">
+    <p class="card-text">
+        Имя: {{ user.user.username }}
+    </p>
+    <p class="card-text">
+        Роль: {{ user.role }}
+    </p>
+    <div class="d-flex justify-content-between align-items-center">
+        {% if user.role == 'user' %}
+            <div class="btn-group">
+                    <a class="btn btn-sm btn-primary" 
+                        href="{% url 'set_moderator' id=company.id user_id=user.id %}" 
+                        role="button">Назначить модератором</a>
+            </div>
+        {% endif %}
+        {% if user.role == 'moderator' %}
+            <div class="btn-group">
+                <a class="btn btn-sm btn-primary" 
+                    href="{% url 'set_user' id=company.id user_id=user.id %}" 
+                    role="button">Исключить из модераторов</a>
+            </div>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,29 @@
+{% if user.profile.company == company and user.profile.is_staff %}
+<div class="card my-4">
+    <form method="post" action="{% url 'create_news' company.id %}">
+        {% csrf_token %}
+        <h5 class="card-header">Добавить новость:</h5>
+        <div class="card-body">
+            {% for field in form %} 
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}" class="col-md-4 col-form-label text-md-right">{{ field.label }}{% if field.field.required %}<span class="required">*</span>{% endif %}</label>
+                    <div class="col-md-6">
+                    {{ field }}
+                    {{ field.errors }}
+                    </div>
+                </div>
+            {% endfor %}
+        <button type="submit" class="btn btn-primary">Отправить</button>
+        </div>
+    </form>
+</div>
+{% endif %}
+
+{% for item in news %}
+<div class="media card mb-4">
+    <div class="media-body card-body">
+        <h5 class="mt-0">{{ item.title }}</h5>
+        <p>{{ item.body | linebreaksbr }}</p>
+    </div>
+</div>
+{% endfor %} 

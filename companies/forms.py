@@ -1,6 +1,7 @@
 from django import forms
+from django.forms.widgets import Textarea
 
-from .models import Company
+from .models import Company, News
 
 
 class CompanyForm(forms.ModelForm):
@@ -17,3 +18,14 @@ class CompanyForm(forms.ModelForm):
             'adress': ('Адрес'),
             'city': ('Город'),
         }
+
+
+class NewsForm(forms.ModelForm):
+    class Meta:
+        model = News
+        fields = ('title', 'body')
+        labels = {
+            'title': ('Заголовок'),
+            'body': ('Текст новости'),
+        }
+        widgets = {'body': Textarea()}

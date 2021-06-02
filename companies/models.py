@@ -36,13 +36,48 @@ class Company(models.Model):
         return self.name
 
 
+class News(models.Model):
+    title = models.CharField(max_length=128)
+    body = models.TextField()
+    pub_date = models.DateField(auto_now_add=True)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE,
+                                related_name='news')
+
+    class Meta:
+        ordering = ('-pub_date',)
+
+    def __str__(self):
+        return self.title
+
+
 class Profile(models.Model):
+    class Role(models.TextChoices):
+        USER = 'user'
+        MODERATOR = 'moderator'
+        OWNER = 'owner'
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.SET_NULL,
                                 related_name='staff', null=True, blank=True)
+    role = models.TextField(
+        verbose_name='role',
+        choices=Role.choices,
+        default='user'
+    )
 
     def __str__(self):
         return self.user.username
+
+    @property
+    def is_owner(self):
+        return self.role == self.Role.OWNER
+
+    @property
+    def is_moderator(self):
+        return self.role == self.Role.MODERATOR
+
+    @property
+    def is_staff(self):
+        return self.is_owner or self.is_moderator
 
 
 @receiver(post_save, sender=User)

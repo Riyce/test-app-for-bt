@@ -10,4 +10,14 @@ urlpatterns = [
     path('<int:id>/join/', views.join_an_organization, name='join'),
     path('<int:id>/delete/', views.delete_an_organization, name='delete'),
     path('<int:id>/update/', views.update_an_organization, name='update'),
+    path('<int:id>/create_news/', views.create_news, name='create_news'),
+    path('<int:id>/users/', views.staff_page, name='staff'),
+    path(
+        '<int:id>/users/<int:user_id>/set_moderator_role/',
+        views.set_moderator_status, name='set_moderator'
+    ),
+    path(
+        '<int:id>/users/<int:user_id>/set_user_role/',
+        views.set_user_status, name='set_user'
+    ),
 ]
