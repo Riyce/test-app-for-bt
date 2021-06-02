@@ -1,0 +1,14 @@
+<nav class="navbar navbar-light" style="background-color: #22577c;" >
+    <a class="navbar-brand" href="{% url 'index' %}"><span style="color:rgb(45, 236, 19)">Test</span>app</a>
+    <nav class="my-2 my-md-0 mr-md-3">
+        {% if user.is_authenticated %}
+            {% if not user.profile.company %}   
+                <a class="p-2 text-dark" href="{% url 'create' %}">Создать организацию</a>
+            {% endif %}
+            <a class="p-2 text-dark" href="{% url 'logout' %}">Выйти</a>
+        {% else %}
+            <a class="p-2 text-dark" href="{% url 'login' %}">Войти</a> |
+            <a class="p-2 text-dark" href="{% url 'signup' %}">Регистрация</a>
+        {% endif %}
+    </nav>
+</nav>

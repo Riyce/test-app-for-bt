@@ -1,0 +1,12 @@
+    <div class="card-body">
+        <p class="card-text">
+            {{ company.name|linebreaksbr }}
+        </p>
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+                    <a class="btn btn-sm btn-primary" 
+                        href="{% url 'company' company.id %}" 
+                        role="button">На страницу организации</a>
+            </div>
+        </div>
+    </div>

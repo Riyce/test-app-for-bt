@@ -1,0 +1,92 @@
+[
+    {
+        "model": "companies.city",
+        "pk": 1,
+        "fields": {
+            "name": "Москва",
+            "slug": "moskva"
+        }
+    },
+    {
+        "model": "companies.city",
+        "pk": 2,
+        "fields": {
+            "name": "Санкт-Петербург",
+            "slug": "sankt-peterburg"
+        }
+    },
+    {
+        "model": "companies.city",
+        "pk": 3,
+        "fields": {
+            "name": "Псков",
+            "slug": "pskov"
+        }
+    },
+    {
+        "model": "companies.city",
+        "pk": 4,
+        "fields": {
+            "name": "Новгород",
+            "slug": "novgorod"
+        }
+    },
+    {
+        "model": "companies.city",
+        "pk": 5,
+        "fields": {
+            "name": "Новосибирск",
+            "slug": "novosibirsk"
+        }
+    },
+    {
+        "model": "companies.company",
+        "pk": 1,
+        "fields": {
+            "owner": 2,
+            "name": "OOO \"Первая компания\"",
+            "phone": "89998887766",
+            "email": "first@mail.ru",
+            "discription": "Описание первой компании",
+            "foundation_date": "2021-06-01",
+            "adress": "ул. Первая, д.1",
+            "city": 2
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$MBPDhzZFebMptwo2BohJfY$awo8oe4+XLvUCksCuCdkoVyUFqcfcimTHe7lnq6l7rg=",
+            "last_login": "2021-06-02T10:50:30.205Z",
+            "is_superuser": true,
+            "username": "admin",
+            "first_name": "",
+            "last_name": "",
+            "email": "admin@admin.ru",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2021-06-02T10:35:14.478Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$Wd53fFNC64pYfY4yVslPzV$DfY0ug/EFFl37ZiCIGMc1kaYy4dbfo6A/MK+Nv4z6DQ=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "Justuser",
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2021-06-02T10:51:44.379Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]

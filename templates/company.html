@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %} {{ company.name }}{% endblock %}
+{% block header %}{% endblock %}
+{% block content %}
+{% csrf_token %}
+    <main role="main" class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <p class="card-text">Название: {{ company.name }}</p>
+                {% if request.user.profile.company == company %}
+                    <p class="card-text">{{ company.discription }}</p>
+                    <p class="card-text">Дата основания: {{ company.foundation_date }}</p>
+                    <p class="card-text">Телефон: {{ company.phone }}</p>
+                    <p class="card-text">Почта: {{ company.email }}</p>
+                    <p class="card-text">Город: {{ company.city }}</p>
+                    <p class="card-text">Адрес: {{ company.adress }}</p>
+                    <p class="card-text">Численность зарегистрированных сотрудников: {{ company.staff.count }}</p>
+                    <div class="btn-group">
+                        <a class="btn btn-sm btn-primary" 
+                            href="{% url 'left' id=company.id %}" 
+                            role="button">Покинуть организацию</a>
+                    </div>
+                    {% if request.user == company.owner %}    
+                        <div class="btn-group">
+                            <a class="btn btn-sm btn-primary" 
+                                href="{% url 'update' id=company.id %}" 
+                                role="button">Редактировать</a>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-sm danger" 
+                                href="{% url 'delete' id=company.id %}" 
+                                role="button">Удалить организацию</a>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <p class="card-text">У вас нет доступа к данным этой организации</p>
+                    <div class="btn-group">
+                        <a class="btn btn-sm btn-primary" 
+                            href="{% url 'join' id=company.id %}" 
+                            role="button">Вступить в организацию</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </main> 
+{% endblock %}
