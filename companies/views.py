@@ -29,7 +29,7 @@ def company(request, id):
 
 @login_required
 def join_an_organization(request, id):
-    if request.user.profile.company or request.user.profile.role == 'owner':
+    if request.user.profile.company:
         return redirect('company', id=id)
     company = get_object_or_404(Company, id=id)
     request.user.profile.company = company
@@ -54,7 +54,7 @@ def left_an_organization(request, id):
 
 @login_required
 def create_an_organization(request):
-    if request.user.profile.company or request.user.profile.role != 'owner':
+    if request.user.profile.role != 'owner':
         return redirect('index')
     form = CompanyForm(request.POST or None)
     if not form.is_valid():
@@ -62,8 +62,6 @@ def create_an_organization(request):
     company = form.save(commit=False)
     company.owner = request.user
     company.save()
-    request.user.profile.company = company
-    request.user.profile.save()
     return redirect('index')
 
 
@@ -80,8 +78,9 @@ def delete_an_organization(request, id):
 def update_an_organization(request, id):
     company = get_object_or_404(Company, id=id)
     if not (
-        request.user.profile.is_staff and
-        request.user.profile.company == company
+        company.owner == request.user or
+        (request.user.profile.is_moderator and
+        request.user.profile.company == company)
     ):
         return redirect('company', id=id)
     form = CompanyForm(request.POST or None, instance=company)
@@ -95,8 +94,9 @@ def update_an_organization(request, id):
 def create_news(request, id):
     company = get_object_or_404(Company, id=id)
     if not (
-        request.user.profile.company == company and
-        request.user.profile.is_staff
+        company.owner == request.user or
+        (request.user.profile.is_moderator and
+        request.user.profile.company == company)
     ):
         return redirect('company', id=id)
     form = NewsForm(request.POST or None)

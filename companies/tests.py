@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django.test import Client, TestCase
 from django.urls import reverse
 
@@ -96,7 +97,7 @@ class AppTest(TestCase):
             },
             self.client_owner_with_company: {
                 INDEX: 200,
-                CREATE: 302,
+                CREATE: 200,
                 self.UPDATE: 200,
                 self.COMPANY_PAGE: 200
             },
@@ -145,17 +146,22 @@ class AppTest(TestCase):
         }
         clients = {
             self.guest_client: count_before,
-            self.client_owner_with_company: count_before,
             self.client_moderator_with_company: count_before,
             self.client_moderator_without_company: count_before,
             self.just_client: count_before,
             self.client_owner_without_company: count_before + 1,
+            self.client_owner_with_company: count_before + 1,
         }
         for client, companies_count in clients.items():
             with self.subTest():
                 client.post(CREATE, data=form_data, follow=True)
                 count_after = Company.objects.all().count()
                 self.assertEqual(count_after, companies_count)
+                try:
+                    company = get_object_or_404(Company, name=form_data['name'])
+                    company.delete()
+                except:
+                    continue
 
     def test_delete_company(self):
         count_before = Company.objects.all().count()
