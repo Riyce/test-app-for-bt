@@ -46,7 +46,6 @@ class AppTest(TestCase):
             body='Первая новость',
             company=cls.first_company
         )
-        print(cls.first_company.staff.all())
         cls.user_owner_with_company.profile.company = cls.first_company
         cls.user_owner_with_company.profile.role = 'owner'
         cls.user_owner_without_company.profile.role = 'owner'
@@ -87,7 +86,6 @@ class AppTest(TestCase):
                 cls.first_company.pk, cls.user_moderator_with_company.pk
             ]
         )
-        print(cls.first_company.staff.all())
 
     def test_status_codes_for_clients(self):
         status_codes = {
@@ -209,7 +207,6 @@ class AppTest(TestCase):
                 company.name = self.first_company.name
 
     def test_join_company(self):
-        print(self.first_company.staff.all())
         count_before = self.first_company.staff.count()
         self.assertEqual(count_before, 2)
         self.client_moderator_without_company.get(self.JOIN_COMPANY)
