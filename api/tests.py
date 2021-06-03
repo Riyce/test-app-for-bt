@@ -80,6 +80,16 @@ class ClientTests(APITestCase):
         cls.LEFT_COMPANY = reverse('api:api_left', args=[cls.first_company.id])
         cls.CREATE_NEWS = reverse('api:api_news-list',
                                   args=[cls.first_company.id])
+        cls.SET_MODERATOR_STATUS = reverse(
+            'api:api_users-detail',args=[
+                cls.first_company.id, cls.just_user.id
+            ],
+        )
+        cls.SET_USER_STATUS = reverse(
+            'api:api_users-detail',args=[
+                cls.first_company.id, cls.user_moderator_with_company.id
+            ],
+        )
 
     def test_create_company(self):
         count_before = Company.objects.all().count()
@@ -214,3 +224,40 @@ class ClientTests(APITestCase):
                 client.post(self.CREATE_NEWS, data=form_data, format='json')
                 count_after = self.first_company.news.all().count()
                 self.assertEqual(count_after, news_count)
+
+    def test_set_moderator_status(self):
+        user = User.objects.get(username=USERNAME5)
+        self.assertEqual(user.profile.role, 'user')
+        self.client_owner_with_company.get(self.SET_MODERATOR_STATUS)
+        user_after_first_try = User.objects.get(username=USERNAME5)
+        self.assertEqual(user_after_first_try.profile.role, 'user')
+        self.just_client.get(self.JOIN_COMPANY)
+        self.client_owner_without_company.put(
+            self.SET_MODERATOR_STATUS, data={'role': 'moderator'}
+        )
+        user_after_second_try = User.objects.get(username=USERNAME5)
+        self.assertEqual(user_after_second_try.profile.role, 'user')
+        self.client_moderator_with_company.put(
+            self.SET_MODERATOR_STATUS, data={'role': 'moderator'}
+        )
+        user_after_third_try = User.objects.get(username=USERNAME5)
+        self.assertEqual(user_after_third_try.profile.role, 'user')
+        self.client_owner_with_company.put(
+            self.SET_MODERATOR_STATUS, data={'role': 'moderator'}
+        )
+        user_after_four_try = User.objects.get(username=USERNAME5)
+        self.assertEqual(user_after_four_try.profile.role, 'moderator')
+
+    def test_set_user_status(self):
+        user = User.objects.get(username=USERNAME3)
+        self.assertEqual(user.profile.role, 'moderator')
+        self.client_owner_without_company.put(
+            self.SET_USER_STATUS, data={'role': 'user'}
+        )
+        user_after_first_try = User.objects.get(username=USERNAME3)
+        self.assertEqual(user_after_first_try.profile.role, 'moderator')
+        self.client_owner_with_company.put(
+            self.SET_USER_STATUS, data={'role': 'user'}
+        )
+        user_after_second_try = User.objects.get(username=USERNAME3)
+        self.assertEqual(user_after_second_try.profile.role, 'user')
