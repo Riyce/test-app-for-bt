@@ -1,5 +1,6 @@
-from companies.models import Company
 from rest_framework import permissions
+
+from companies.models import Company
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -7,8 +8,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         if request.method == 'POST':
             return (
                 request.user.is_authenticated and
-                request.user.profile.role == 'owner' and
-                not request.user.profile.company
+                request.user.profile.is_owner
             )
         return True
 
@@ -17,10 +17,9 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return obj.owner == request.user
         if request.method == 'PUT' or request.method == 'PATCH':
             return request.user.is_authenticated and (
-                obj.owner == request.user or
-                (
-                    request.user.profile.company == obj and
-                    request.user.profile.role == 'moderator'
+                obj.owner == request.user or (
+                    request.user.profile.is_moderator and
+                    request.user.profile.company == obj
                 )
             )
         return True
@@ -29,12 +28,14 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 class IsStuffOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         company_id = request.parser_context.get('kwargs')['company_id']
+        company = Company.objects.get(id=company_id)
         if request.method != 'GET':
-            return (
-                request.user.is_authenticated and
-                request.user.profile.is_staff and
-                request.user.profile.company.id == company_id
-            )
+            return (request.user.is_authenticated and (
+                company.owner == request.user or (
+                    request.user.profile.is_moderator and
+                    request.user.profile.company == company
+                )
+            ))
         return True
 
 
