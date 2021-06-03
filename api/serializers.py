@@ -1,7 +1,5 @@
-from django.db import models
-from rest_framework import serializers
-
 from companies.models import City, Company, News, Profile
+from rest_framework import serializers
 
 
 class NewsSerializer(serializers.ModelSerializer):
@@ -16,6 +14,7 @@ class CompanySerializer(serializers.ModelSerializer):
         slug_field='name',
     )
     news = NewsSerializer(many=True)
+
     class Meta:
         fields = ('name', 'phone', 'email', 'discription',
                   'foundation_date', 'adress', 'city', 'news')
@@ -36,4 +35,3 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ('user', 'role')
-        

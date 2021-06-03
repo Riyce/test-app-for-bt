@@ -3,13 +3,14 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import (TokenObtainPairView,
                                             TokenRefreshView)
 
-from .views import CompanyViewSet, NewsViewSet, UserViewSet, LeftTheCompany, JoinTheCompany
+from .views import (CompanyViewSet, JoinTheCompany, LeftTheCompany,
+                    NewsViewSet, UserViewSet)
 
 router = DefaultRouter()
-router.register('companies', CompanyViewSet)
-router.register('companies/(?P<company_id>\d+)/news',
+router.register(r'companies', CompanyViewSet)
+router.register(r'companies/(?P<company_id>\d+)/news',
                 NewsViewSet, basename='news')
-router.register('companies/(?P<company_id>\d+)/users',
+router.register(r'companies/(?P<company_id>\d+)/users',
                 UserViewSet, basename='users')
 
 urlpatterns = [

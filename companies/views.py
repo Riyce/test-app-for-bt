@@ -79,8 +79,10 @@ def update_an_organization(request, id):
     company = get_object_or_404(Company, id=id)
     if not (
         company.owner == request.user or
-        (request.user.profile.is_moderator and
-        request.user.profile.company == company)
+        (
+            request.user.profile.is_moderator and
+            request.user.profile.company == company
+        )
     ):
         return redirect('company', id=id)
     form = CompanyForm(request.POST or None, instance=company)
@@ -95,8 +97,10 @@ def create_news(request, id):
     company = get_object_or_404(Company, id=id)
     if not (
         company.owner == request.user or
-        (request.user.profile.is_moderator and
-        request.user.profile.company == company)
+        (
+            request.user.profile.is_moderator and
+            request.user.profile.company == company
+        )
     ):
         return redirect('company', id=id)
     form = NewsForm(request.POST or None)

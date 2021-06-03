@@ -17,9 +17,11 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return obj.owner == request.user
         if request.method == 'PUT' or request.method == 'PATCH':
             return request.user.is_authenticated and (
-                obj.owner == request.user or 
-                (request.user.profile.company == obj and 
-                request.user.profile.role == 'moderator')
+                obj.owner == request.user or
+                (
+                    request.user.profile.company == obj and
+                    request.user.profile.role == 'moderator'
+                )
             )
         return True
 
@@ -37,8 +39,7 @@ class IsStuffOnly(permissions.BasePermission):
 
 
 class IsOwnerOnly(permissions.BasePermission):
-     def has_permission(self, request, view):
+    def has_permission(self, request, view):
         company_id = request.parser_context.get('kwargs')['company_id']
         company = Company.objects.get(id=company_id)
         return company.owner == request.user
-        

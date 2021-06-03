@@ -1,13 +1,14 @@
-from companies.views import company
+
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.mixins import ListModelMixin, CreateModelMixin, UpdateModelMixin
-from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import (CreateModelMixin, ListModelMixin,
+                                   UpdateModelMixin)
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
-from companies.models import Company, News
-from .permissions import IsOwnerOrReadOnly, IsOwnerOnly, IsStuffOnly
+from companies.models import Company
+from .permissions import IsOwnerOnly, IsOwnerOrReadOnly, IsStuffOnly
 from .serializers import CompanySerializer, NewsSerializer, ProfileSerializer
 
 

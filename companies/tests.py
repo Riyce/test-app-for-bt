@@ -158,9 +158,10 @@ class AppTest(TestCase):
                 count_after = Company.objects.all().count()
                 self.assertEqual(count_after, companies_count)
                 try:
-                    company = get_object_or_404(Company, name=form_data['name'])
+                    company = get_object_or_404(Company,
+                                                name=form_data['name'])
                     company.delete()
-                except:
+                except Exception:
                     continue
 
     def test_delete_company(self):
