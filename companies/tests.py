@@ -234,6 +234,8 @@ class AppTest(TestCase):
         self.assertEqual(count_before, 2)
         self.client_owner_with_company.get(self.LEFT_COMPANY)
         count_after1 = self.first_company.staff.count()
+        role = self.user_owner_with_company.profile.role
+        self.assertEqual(role, 'owner')
         self.assertEqual(count_before-1, count_after1)
         self.client_moderator_with_company.get(self.LEFT_COMPANY)
         count_after2 = self.first_company.staff.count()
