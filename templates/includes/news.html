@@ -1,4 +1,4 @@
-{% if user.profile.company == company and user.profile.is_staff %}
+{% if user.profile.company == company and user.profile.is_staff or company.owner == request.user %}
 <div class="card my-4">
     <form method="post" action="{% url 'create_news' company.id %}">
         {% csrf_token %}

@@ -41,12 +41,12 @@ def join_an_organization(request, id):
 @login_required
 def left_an_organization(request, id):
     company = get_object_or_404(Company, id=id)
-    if (
-        request.user.profile.company != company or
-        company.owner == request.user
-    ):
+    if request.user.profile.company != company:
         return redirect('company', id=id)
     request.user.profile.company = None
+    if request.user.profile.is_owner:
+        request.user.profile.save()
+        return redirect('company', id=id)
     request.user.profile.role = 'user'
     request.user.profile.save()
     return redirect('company', id=id)

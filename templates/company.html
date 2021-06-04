@@ -23,18 +23,13 @@
                                 href="{% url 'update' id=company.id %}" 
                                 role="button">Редактировать</a>
                         </div>
-                        {% if request.user.is_owner %}         
+                    {% endif %}
+                    {% if user == company.owner %}         
                         <div class="btn-group">
                             <a class="btn btn-sm danger" 
                                 href="{% url 'delete' id=company.id %}" 
                                 role="button">Удалить организацию</a>
                         </div>
-                        <div class="btn-group">
-                            <a class="btn btn-sm danger" 
-                                href="#" 
-                                role="button">Добавить модератора</a>
-                        </div>
-                        {% endif %}
                     {% endif %}
                     {% if user.profile.company == company %}
                     <div class="btn-group">
